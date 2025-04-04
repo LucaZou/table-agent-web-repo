@@ -168,29 +168,32 @@ export default defineComponent({
 
 <style scoped>
 .home-container {
-  padding: 40px 20px;
+  padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 40px);
 }
 
 .header-container {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .header-container h1 {
-  font-size: 2.5em;
+  font-size: 2em;
   color: #409EFF;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .header-container p {
-  font-size: 1.2em;
+  font-size: 1.1em;
   color: #606266;
 }
 
 .upload-card {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .card-header {
@@ -207,17 +210,19 @@ export default defineComponent({
 }
 
 .upload-container {
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
 .upload-actions {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .success-container {
-  margin-top: 30px;
+  margin-top: 20px;
+  position: sticky;
+  bottom: 20px;
 }
 </style> 
