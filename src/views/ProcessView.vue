@@ -19,7 +19,7 @@
       <!-- 主体内容 -->
       <el-container class="main-container">
         <!-- 左侧表格预览 -->
-        <el-aside width="40%" class="aside-panel">
+        <el-aside width="60%" class="aside-panel">
           <div class="panel-header">
             <h3>文件预览</h3>
             <p v-if="fileName">{{ fileName }}</p>
