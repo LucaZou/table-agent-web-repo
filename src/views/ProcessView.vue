@@ -19,9 +19,9 @@
       <!-- 主体内容 -->
       <el-container class="main-container">
         <!-- 左侧表格预览 -->
-        <el-aside width="60%" class="aside-panel">
+        <el-aside width="70%" class="aside-panel">
           <div class="panel-header">
-            <h3>文件预览</h3>
+            <h3>文件预览(前20行)</h3>
             <p v-if="fileName">{{ fileName }}</p>
           </div>
           
@@ -43,7 +43,7 @@
             
             <!-- 结果预览 -->
             <div v-if="processResult" class="result-preview">
-              <h4>处理结果预览</h4>
+              <h4>处理结果预览(前20行)</h4>
               <el-table 
                 :data="processResult.preview" 
                 border 

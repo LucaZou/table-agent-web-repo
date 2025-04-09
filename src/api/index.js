@@ -44,7 +44,7 @@ export const fileApi = {
   },
   
   // 获取文件预览
-  getFilePreview(fileId, rows = 5) {
+  getFilePreview(fileId, rows = 20) {
     return api.get(`/api/files/preview/${fileId}`, {
       params: { rows }
     })
