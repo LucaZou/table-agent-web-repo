@@ -39,6 +39,31 @@
               <div class="table-info">
                 总行数: {{ filePreview.rows_count }} | 文件类型: {{ filePreview.file_type }}
               </div>
+              
+              <!-- 添加表格列名提示卡片 -->
+              <el-card class="columns-hint-card" shadow="hover">
+                <template #header>
+                  <div class="card-header">
+                    <h4>表格列名提示</h4>
+                    <el-tooltip content="使用准确的列名可以提高AI处理准确性" placement="top">
+                      <el-icon><InfoFilled /></el-icon>
+                    </el-tooltip>
+                  </div>
+                </template>
+                <div class="columns-list">
+                  <p class="hint-text">请在描述需求时使用以下准确的列名:</p>
+                  <el-tag
+                    v-for="column in filePreview.columns"
+                    :key="column"
+                    class="column-tag"
+                    @click="insertColumnName(column)"
+                    type="info"
+                    effect="plain">
+                    {{ column }}
+                  </el-tag>
+                  <p class="hint-text hint-example">示例: "请帮我按<el-tag size="small" type="success">{{ filePreview.columns[0] }}</el-tag>列进行排序"</p>
+                </div>
+              </el-card>
             </div>
             
             <!-- 结果预览 -->
@@ -80,6 +105,7 @@
               <!-- 系统提示消息 -->
               <div class="message system-message">
                 <p>您好！我是AI表格处理助手。请告诉我您想要如何处理这份表格数据，比如筛选、排序、分组、计算或可视化等操作。</p>
+                <p>提示: 您可以点击左侧<strong>表格列名提示</strong>中的列名，将其添加到输入框中，以确保使用准确的列名。</p>
               </div>
               
               <!-- 聊天历史 -->
@@ -129,6 +155,7 @@ import { fileApi, chatApi } from '@/api'
 import { marked } from 'marked'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
+import { InfoFilled } from '@element-plus/icons-vue'
 
 export default defineComponent({
   name: 'ProcessView',
@@ -137,6 +164,9 @@ export default defineComponent({
       type: String,
       required: true
     }
+  },
+  components: {
+    InfoFilled
   },
   
   setup(props) {
@@ -185,6 +215,11 @@ export default defineComponent({
       });
       
       return marked(content);
+    }
+    
+    // 插入列名到输入框
+    const insertColumnName = (columnName) => {
+      userMessage.value += columnName + ' ';
     }
     
     // 滚动到最新消息
@@ -295,8 +330,9 @@ export default defineComponent({
     }
     
     // 组件挂载时加载文件预览
-    onMounted(() => {
-      loadFilePreview()
+    onMounted(async () => {
+      await loadFilePreview()
+      await scrollToBottom()
     })
     
     // 监听消息变化，自动滚动到底部
@@ -315,6 +351,7 @@ export default defineComponent({
       imageUrl,
       hasProcessResult,
       formatMessage,
+      insertColumnName,
       sendMessage,
       exportFile,
       backToHome
@@ -494,5 +531,55 @@ export default defineComponent({
 
 :deep(.markdown-content code) {
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+.columns-hint-card {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.columns-hint-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.columns-hint-card .card-header h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #409EFF;
+}
+
+.columns-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.column-tag {
+  cursor: pointer;
+  margin: 2px;
+  transition: all 0.3s;
+}
+
+.column-tag:hover {
+  transform: scale(1.05);
+  background: #ecf5ff;
+}
+
+.hint-text {
+  width: 100%;
+  margin: 5px 0;
+  color: #606266;
+  font-size: 13px;
+}
+
+.hint-example {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px;
+  color: #67c23a;
 }
 </style> 
