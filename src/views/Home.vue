@@ -67,7 +67,7 @@
     </el-row>
     <div class="footer">
       <p>Copyright © 2025 AI表格处理工具. V1.0 </p>
-      <p>备案号: 京ICP备XXXXXXXX号</p>
+      <p>备案号: 闽ICP备2025094858号-1</p>
     </div>
   </div>
 </template>
