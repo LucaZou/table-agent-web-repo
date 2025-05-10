@@ -37,7 +37,7 @@
             <div class="el-upload__text">拖拽文件到此处或<em>点击上传</em></div>
             <template #tip>
               <div class="el-upload__tip">
-                仅支持 .csv, .xlsx, .xls 格式的表格文件
+                仅支持 .csv, .xlsx, .xls 格式的表格文件，最大支持100MB
               </div>
             </template>
           </el-upload>
@@ -49,6 +49,17 @@
             <el-button @click="resetFileList">
               重新选择
             </el-button>
+          </div>
+          
+          <div class="upload-note" v-if="fileList.length > 0 && fileList[0].raw && fileList[0].raw.size > 10 * 1024 * 1024">
+            <el-alert
+              title="大文件提示"
+              type="warning"
+              :closable="false">
+              <div>
+                您正在上传较大的文件({{ (fileList[0].raw.size / (1024 * 1024)).toFixed(2) }}MB)，上传可能需要较长时间，请耐心等待。
+              </div>
+            </el-alert>
           </div>
         </el-card>
         
@@ -121,6 +132,13 @@ export default defineComponent({
         return
       }
       
+      // 检查文件大小，最大允许100MB
+      const maxSize = 100 * 1024 * 1024 // 100MB
+      if (file.size > maxSize) {
+        ElMessage.error(`文件过大，最大允许100MB，当前文件大小${(file.size / (1024 * 1024)).toFixed(2)}MB`)
+        return
+      }
+      
       // 创建FormData
       const formData = new FormData()
       formData.append('file', file)
@@ -143,7 +161,11 @@ export default defineComponent({
         ElMessage.success('文件上传成功')
       } catch (error) {
         console.error('上传文件失败:', error)
-        ElMessage.error(`上传文件失败: ${error.message || '未知错误'}`)
+        if (error.response && error.response.status === 413) {
+          ElMessage.error('上传文件过大，请减小文件大小后重试')
+        } else {
+          ElMessage.error(`上传文件失败: ${error.message || '未知错误'}`)
+        }
       } finally {
         uploading.value = false
       }

@@ -34,6 +34,10 @@
                   :prop="column" 
                   :label="column" 
                   min-width="120">
+                  <template #default="scope">
+                    <span v-if="scope.row[column] === null || scope.row[column] === undefined">-</span>
+                    <span v-else>{{ scope.row[column] }}</span>
+                  </template>
                 </el-table-column>
               </el-table>
               <div class="table-info">
@@ -55,6 +59,10 @@
                   :prop="column" 
                   :label="column" 
                   min-width="120">
+                  <template #default="scope">
+                    <span v-if="scope.row[column] === null || scope.row[column] === undefined">-</span>
+                    <span v-else>{{ scope.row[column] }}</span>
+                  </template>
                 </el-table-column>
               </el-table>
               <div class="table-info">

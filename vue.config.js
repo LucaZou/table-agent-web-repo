@@ -5,12 +5,20 @@ module.exports = defineConfig({
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
-        changeOrigin: true
+        target: 'http://backend:8000',
+        changeOrigin: true,
+        logLevel: 'debug',
+        onProxyReq(proxyReq) {
+          console.log(`Proxying request to: ${proxyReq.path}`);
+        },
+        onError: (err) => {
+          console.error('Proxy error:', err);
+        }
       },
       '/static': {
-        target: 'http://localhost:8000',
-        changeOrigin: true
+        target: 'http://backend:8000',
+        changeOrigin: true,
+        logLevel: 'debug'
       }
     }
   }
